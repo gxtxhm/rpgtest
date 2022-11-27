@@ -8,6 +8,8 @@ public class CameraMove : MonoBehaviour
     public float x=0.23f, y=7.19f, z=-7.54f;
     Vector3 vec;
 
+    public bool canMove=true;
+
     void Start()
     {
         vec = new Vector3(x, y, z);
@@ -67,7 +69,8 @@ public class CameraMove : MonoBehaviour
 
     public void LateUpdate()
     {
-        Rotate();
+        if(canMove) Rotate();
+
         //Zoom();
     }
 

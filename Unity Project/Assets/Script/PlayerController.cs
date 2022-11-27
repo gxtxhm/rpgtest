@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     public int maxHp;
     int curHp;
 
+    bool visibleCursor = false;
+
     public Camera cam;
     public GameObject player;
     Rigidbody playerRigid;
@@ -40,9 +42,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerMove();
-        //transform.LookAt(cameraPoint.transform.forward);
+        if(!visibleCursor) PlayerMove();
 
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (visibleCursor) { visibleCursor = false; cam.GetComponent<CameraMove>().canMove = true; }
+            else { visibleCursor = true; cam.GetComponent<CameraMove>().canMove = false; }
+
+            Cursor.visible = visibleCursor;
+
+        }
 
     }
     private void OnTriggerEnter(Collider other)
