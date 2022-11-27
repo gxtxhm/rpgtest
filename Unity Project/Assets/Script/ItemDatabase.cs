@@ -17,10 +17,10 @@ public class ItemDatabase : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < 5; i++) 
-        {
-            GameObject go = Instantiate(fieldItemPrefab, pos[i], Quaternion.identity);
-            go.GetComponent<FieldItem>().SetItem(itemDB[Random.Range(0,2)]);
-        }
+        //for (int i = 0; i < 5; i++) 
+        //{
+        //    GameObject go = Instantiate(fieldItemPrefab, pos[i], Quaternion.identity);
+        //    go.GetComponent<FieldItem>().SetItem(itemDB[Random.Range(0,2)]);
+        //}
     }
 }
