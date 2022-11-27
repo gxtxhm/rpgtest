@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     public int maxHp;
     int curHp;
 
+    public Camera cam;
+    public GameObject player;
     Rigidbody playerRigid;
     Animator animator;
     public Image hp;
@@ -16,7 +18,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 3f;
 
     bool isDamaged = false;
-
+    private Vector3 MoveDir;
     float horizontal, vertical;
     Vector3 moveVec;
 
@@ -39,6 +41,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         PlayerMove();
+        //transform.LookAt(cameraPoint.transform.forward);
+
+
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -66,14 +71,33 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("플레이어 사망");
     }
+
+    void MoveLookAt()
+    {
+        //메인카메라가 바라보는 방향입니다.
+        Vector3 dir = cam.transform.localRotation * Vector3.forward;
+        //카메라가 바라보는 방향으로 팩맨도 바라보게 합니다.
+        transform.localRotation = cam.transform.localRotation;
+        //팩맨의 Rotation.x값을 freeze해놓았지만 움직여서 따로 Rotation값을 0으로 세팅해주었습니다.
+        transform.localRotation = new Quaternion(0, transform.localRotation.y, 0, transform.localRotation.w);
+
+        player.transform.localRotation = transform.localRotation;
+    }
+
     void PlayerMove()
     {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
         moveVec = new Vector3(horizontal, 0, vertical).normalized;
-        transform.LookAt(transform.position + moveVec);
-        if((horizontal!=0||vertical!=0)&&Input.GetKey(KeyCode.LeftShift))
+        
+        MoveLookAt();
+
+        // 카메라 이동방향
+        Quaternion v3Rotation = Quaternion.Euler(0f, cam.transform.eulerAngles.y, 0f);
+        moveVec = v3Rotation * moveVec;
+
+        if ((horizontal!=0||vertical!=0)&&Input.GetKey(KeyCode.LeftShift))
         {
             animator.SetBool("IsRun", true);
             transform.position += moveVec *2* speed * Time.deltaTime;
@@ -81,13 +105,14 @@ public class PlayerController : MonoBehaviour
         else
         {
             animator.SetBool("IsRun", false);
-            transform.position += moveVec * speed * Time.deltaTime;
+            
         }
 
         
         if(horizontal!=0||vertical!=0)
         {
             animator.SetBool("IsWalk", true);
+            transform.position += moveVec    * speed * Time.deltaTime;
         }
         else
         {

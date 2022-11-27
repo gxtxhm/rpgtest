@@ -5,12 +5,14 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     Collider weaponCollider;
+    //GameObject weapon;
     public int damage=20;
     void Start()
     {
         // 나중에 무기 꺼낼때나 먹을 때 드는 거로 바꿔야함
         //weapon = GetComponentInChildren<GameObject>();
         weaponCollider = GetComponentInChildren<Collider>();
+        weaponCollider.enabled = false;
     }
 
     // Update is called once per frame
