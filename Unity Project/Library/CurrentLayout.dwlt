@@ -47,7 +47,7 @@ MonoBehaviour:
   m_MinSize: {x: 685, y: 494}
   m_MaxSize: {x: 14006, y: 14044}
   vertical: 0
-  controlID: 109
+  controlID: 83
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 494}
   m_MaxSize: {x: 10002, y: 14044}
   vertical: 1
-  controlID: 110
+  controlID: 107
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 222}
   m_MaxSize: {x: 8006, y: 4022}
   vertical: 0
-  controlID: 111
+  controlID: 108
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -428,19 +428,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Models
+    - Assets
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Models
+  - Assets
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: C:\Users\USER\Documents\GitHub\UnityRPGDemo\Unity Project
+  m_LastProjectPath: C:\Users\USER\Documents\GitHub\rpgtest\Unity Project
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 40}
-    m_SelectedIDs: 90340000
-    m_LastClickedID: 13456
+    m_SelectedIDs: 8c290000
+    m_LastClickedID: 10636
     m_ExpandedIDs: 000000008c29000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -500,27 +500,29 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: c6230000c030000000000000f8ecfeff664c0000bcba0000e0290000aa3800009e29000000a000003c380000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: NewBehaviourScript
+      m_OriginalName: NewBehaviourScript
       m_EditFieldRect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
+        x: 13.272728
+        y: 168
+        width: 71
+        height: 14
       m_UserData: 0
       m_IsWaitingForDelay: 0
-      m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_IsRenaming: 1
+      m_OriginalEventType: 7
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 5}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
-      m_Path: 
-      m_Icon: {fileID: 0}
-      m_ResourceFile: 
-    m_NewAssetIndexInList: -1
+      m_Path: Assets/NewBehaviourScript.cs
+      m_Icon: {fileID: 8647890191352912404, guid: 0000000000000000d000000000000000,
+        type: 0}
+      m_ResourceFile: C:/Program Files/Unity/Hub/Editor/2019.1.0f2/Editor/Data/Resources/ScriptTemplates/81-C#
+        Script-NewBehaviourScript.cs.txt
+    m_NewAssetIndexInList: 11
     m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 64
   m_DirectoriesAreaWidth: 200
@@ -589,9 +591,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 6cfbffff
-      m_LastClickedID: -1172
-      m_ExpandedIDs: 8efbffffac35000024360000a2360000
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 8efbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -684,7 +686,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.01920552, y: 0.01710975, z: -0.00032963042, w: -0.9996948}
     speed: 2
-    m_Value: {x: -0.019205026, y: 0.017109308, z: -0.00032962192, w: -0.9996691}
+    m_Value: {x: -0.019205522, y: 0.01710975, z: -0.00032963042, w: -0.9996949}
   m_Size:
     m_Target: 964.35657
     speed: 2
@@ -750,10 +752,10 @@ MonoBehaviour:
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -768
-    m_HBaseRangeMax: 768
-    m_VBaseRangeMin: -432
-    m_VBaseRangeMax: 432
+    m_HBaseRangeMin: -960
+    m_HBaseRangeMax: 960
+    m_VBaseRangeMin: -540
+    m_VBaseRangeMax: 540
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -773,23 +775,23 @@ MonoBehaviour:
       y: 17
       width: 880
       height: 394
-    m_Scale: {x: 0.4560185, y: 0.4560185}
-    m_Translation: {x: 440, y: 197}
+    m_Scale: {x: 0.36481485, y: 0.36481482}
+    m_Translation: {x: 440.00003, y: 197}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -964.8731
-      y: -432
-      width: 1929.7462
-      height: 864
+      x: -1206.0913
+      y: -540
+      width: 2412.1826
+      height: 1080
     m_MinimalGUI: 1
-  m_defaultScale: 0.4560185
+  m_defaultScale: 0.36481482
   m_TargetTexture: {fileID: 0}
   m_CurrentColorSpace: 0
-  m_LastWindowPixelSize: {x: 1100, y: 513.75}
+  m_LastWindowPixelSize: {x: 880, y: 411}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000100000100
