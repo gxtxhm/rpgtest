@@ -14,6 +14,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public GameObject InGamePanel;
     public GameObject player;
     public Canvas canvas;
+    PhotonView PV;
+    public Text NickNameText;
 
     [Header("Disconnect")]
     public PlayerLeaderboardEntry MyPlayFabInfo;
@@ -41,12 +43,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Screen.SetResolution(960, 540, false);
         PhotonNetwork.SendRate = 60;
         PhotonNetwork.SerializationRate = 30;
-
+        PV = GetComponent<PhotonView>();
     }
 
     public void Login()
     {
         var request = new LoginWithEmailAddressRequest { Email = EmailInput.text, Password = PasswordInput.text };
+        PhotonNetwork.LocalPlayer.NickName = NickNameText.text;
         PlayFabClientAPI.LoginWithEmailAddress(request, (result) => 
         { GetLeaderboard(result.PlayFabId); PhotonNetwork.ConnectUsingSettings(); }, (error) => print("로그인 실패"));
     }
@@ -110,18 +113,29 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
 
     #region 로비
-    public override void OnConnectedToMaster() => PhotonNetwork.JoinLobby();
+    public override void OnConnectedToMaster()
+    {
+        PhotonNetwork.JoinLobby();
+        
+    }
 
     //void Update() => LobbyInfoText.text = (PhotonNetwork.CountOfPlayers - PhotonNetwork.CountOfPlayersInRooms) + "로비 / " + PhotonNetwork.CountOfPlayers + "접속";
 
+    [PunRPC]
+    void SetPlayer(int id)
+    {
+        Instantiate(player);
+    }
     public override void OnJoinedLobby()
     {
         // 방에서 로비로 올 땐 딜레이없고, 로그인해서 로비로 올 땐 PlayFabUserList가 채워질 시간동안 1초 딜레이
-        if (isLoaded)
-        {
-            
-        }
-        else Invoke("OnJoinedLobbyDelay", 1);
+        //if (isLoaded)
+        //{
+
+        //}
+        //else Invoke("OnJoinedLobbyDelay", 1);
+
+        OnJoinedLobbyDelay();
     }
 
     void OnJoinedLobbyDelay()
@@ -129,19 +143,26 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         isLoaded = true;
         PhotonNetwork.LocalPlayer.NickName = MyPlayFabInfo.DisplayName;
         DisconnectPanel.SetActive(false);
-        
-        // 캐릭터,다른 캐릭터와 몬스터들 다 로딩 - 몬스터매니저에서 다 받아오기
+
         Instantiate(player);
+
+        // 캐릭터,다른 캐릭터와 몬스터들 다 로딩 - 몬스터매니저에서 다 받아오기
+        //PV.RPC("SetPlayer", RpcTarget.AllBuffered);
+
+        //if(PhotonNetwork.CountOfPlayers-PhotonNetwork.CountOfPlayersInRooms>=2)
+        {
+            for(int i=0;i< PhotonNetwork.CountOfPlayers - PhotonNetwork.CountOfPlayersInRooms;i++)
+            {
+                //Instantiate(PhotonNetwork.PlayerList[i].);
+            }
+        }
+
         InGamePanel.SetActive(true);
         canvas.GetComponent<InventoryUI>().enabled = true;
     }
 
     void ShowPanel(GameObject CurPanel)
     {
-        //LobbyPanel.SetActive(false);
-        //CafePanel.SetActive(false);
-        //ShopPanel.SetActive(false);
-        //UserHousePanel.SetActive(false);
         DisconnectPanel.SetActive(false);
 
         CurPanel.SetActive(true);
@@ -169,25 +190,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
 
     #region 방
-    public void JoinOrCreateRoom(string roomName)
+    public void JoinOrCreateRoom()
     {
-        if(roomName == "유저방")
-        {
-            //PlayFabUserList의 표시이름과 입력받은 닉네임이 같다면 PlayFabID를 커스텀 프로퍼티로 넣고 방을 만든다
-            //for (int i = 0; i < PlayFabUserList.Count; i++)
-            //{
-            //    if (PlayFabUserList[i].DisplayName == UserNickNameInput.text)
-            //    {
-            //        RoomOptions roomOptions = new RoomOptions();
-            //        roomOptions.MaxPlayers = 25;
-            //        roomOptions.CustomRoomProperties = new Hashtable() { { "PlayFabID", PlayFabUserList[i].PlayFabId } };
-            //        PhotonNetwork.JoinOrCreateRoom(UserNickNameInput.text + "님의 방", roomOptions, null);
-            //        return;
-            //    }
-            //}
-            //print("닉네임이 일치하지 않습니다");
-        }
-        else PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions() { MaxPlayers = 25 }, null);
+        PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions() { MaxPlayers = 2 }, null);
+
+        Debug.Log("방입장");
+
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message) => print("방만들기실패");
@@ -195,24 +203,30 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinRoomFailed(short returnCode, string message) => print("방참가실패");
 
 
-
+    // 방에 참가하면 호출되는 콜백함수이다. 
     public override void OnJoinedRoom()
     {
-        RoomRenewal();
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            //PV.RPC("Matched" , RpcTarget.All);
 
-        string curName = PhotonNetwork.CurrentRoom.Name;
+            // 보스맵 입장 및 2명 생성
+
+            Debug.Log("매칭 성공!");
+        }
+
+        //string curName = PhotonNetwork.CurrentRoom.Name;
         //RoomNameInfoText.text = curName;
         
         //유저방이면 데이터 가져오기
-        
         {
             
 
-            string curID = PhotonNetwork.CurrentRoom.CustomProperties["PlayFabID"].ToString();
-            GetData(curID);
+            //string curID = PhotonNetwork.CurrentRoom.CustomProperties["PlayFabID"].ToString();
+            //GetData(curID);
 
             // 현재 방 PlatyFabID 커스텀 프로퍼티가 나의 PlayFabID와 같다면 값을 저장할 수 있음
-            if (curID == MyPlayFabInfo.PlayFabId)
+            //if (curID == MyPlayFabInfo.PlayFabId)
             {
                 //RoomNameInfoText.text += " (나의 방)";
 
@@ -222,27 +236,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public override void OnPlayerEnteredRoom(Player newPlayer) => RoomRenewal();
 
-    public override void OnPlayerLeftRoom(Player otherPlayer) => RoomRenewal();
-
-    void RoomRenewal()
-    {
-        //UserNickNameText.text = "";
-        //for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-        //    UserNickNameText.text += PhotonNetwork.PlayerList[i].NickName + "\n";
-        //RoomNumInfoText.text = PhotonNetwork.CurrentRoom.PlayerCount + "명 / " + PhotonNetwork.CurrentRoom.MaxPlayers + "최대";
-    }
-
-    public override void OnLeftRoom()
-    {
-        //SetDataInput.gameObject.SetActive(false);
-        //SetDataBtnObj.SetActive(false);
-
-        //SetDataInput.text = "";
-        //UserNickNameInput.text = "";
-        //UserHouseDataText.text = "";
-    }
 
     public void SetDataBtn()
     {

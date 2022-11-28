@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,12 +12,14 @@ public class PlayerController : MonoBehaviour
 
     bool visibleCursor = false;
 
+    Vector3 curPos;
+
     public Camera cam;
     public GameObject player;
     Rigidbody playerRigid;
     Animator animator;
-    public Image hp;
-    public Image mp;
+    public Image HealthImage;
+    public Image MPImage;
     public bool isDead = false;
     public float speed = 3f;
 
@@ -35,15 +39,17 @@ public class PlayerController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         // 나중에 바꿔야함
         weapon = GetComponentInChildren<Weapon>();
-        hp.fillAmount = curHp/100;
-        mp.fillAmount = 1;
+        HealthImage.fillAmount = curHp/100;
+        MPImage.fillAmount = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!visibleCursor) PlayerMove();
-
+        if(!visibleCursor|| PV.IsMine) PlayerMove();
+        // 남의 캐릭터의 위치 동기화
+        else if ((transform.position - curPos).sqrMagnitude >= 100) transform.position = curPos;
+        else transform.position = Vector3.Lerp(transform.position, curPos, Time.deltaTime * 10);
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -62,7 +68,7 @@ public class PlayerController : MonoBehaviour
             //약간 뒤로 충격 + 1초정도 무적 코루틴으로
             Debug.Log("적에게 맞음!");
             curHp -= other.gameObject.GetComponentInParent<Enemy>().damage;
-            hp.fillAmount = curHp / 100.0f;
+            HealthImage.fillAmount = curHp / 100.0f;
 
             if (curHp <= 0) Died();
 
@@ -126,7 +132,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-
             animator.SetBool("IsWalk", false);
         }
 
@@ -140,6 +145,40 @@ public class PlayerController : MonoBehaviour
                 weapon.UseWeapon();
                 lastSwing = Time.time;
             }
+        }
+    }
+    public Text NickNameText;
+    PhotonView PV;
+    private void Awake()
+    {
+        PV = GetComponent<PhotonView>();
+        
+        //닉네임
+        //NickNameText.text = PV.IsMine ? PhotonNetwork.NickName : PV.Owner.NickName;
+        //NickNameText.color = PV.IsMine ? Color.green : Color.blue;
+        if (PV.IsMine)
+        {
+            //var cm = GameObject.Find("CMCamera").GetComponent<CinemachineVirtualCamera>();
+            //cm.LookAt = gameObject.transform;
+            //cm.Follow = gameObject.transform;
+        }
+    }
+
+    // 포톤뷰의 요소들을 동기화 시킴
+    // flipX를 동기화시키기 위해서 FlipXRPC함수를 PV.RPC함수를 통해 PV를 가지고있는 모든 사람에게 이 함수를 실행하라고함.
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(HealthImage.fillAmount);
+            stream.SendNext(MPImage.fillAmount);
+        }
+        else
+        {
+            curPos = (Vector3)stream.ReceiveNext();
+            HealthImage.fillAmount = (float)stream.ReceiveNext();
+            MPImage.fillAmount = (float)stream.ReceiveNext();
         }
     }
 
