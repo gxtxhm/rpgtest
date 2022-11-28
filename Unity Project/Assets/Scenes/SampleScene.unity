@@ -2482,6 +2482,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7900548064182524339, guid: da10c3e121a4aa243a7f805e03871018,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da10c3e121a4aa243a7f805e03871018, type: 3}
 --- !u!1001 &777630902
@@ -2777,6 +2782,7 @@ MonoBehaviour:
   x: 0.23
   y: 7.19
   z: -7.54
+  canMove: 1
   follow: {fileID: 5903297866085456519}
   m_Speed: 0
   m_MaxRayDist: 1
@@ -3899,7 +3905,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 2.2000005}
+  m_AnchoredPosition: {x: 0, y: 2.2005577}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &1584529190 stripped
@@ -4853,8 +4859,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1613960032}
   m_HandleRect: {fileID: 1613960031}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.99235594
+  m_Value: -0.0002496879
+  m_Size: 0.99250144
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4999,6 +5005,7 @@ GameObject:
   - component: {fileID: 2099893602}
   - component: {fileID: 2099893601}
   - component: {fileID: 2099893600}
+  - component: {fileID: 2099893604}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -5087,6 +5094,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2099893604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099893599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a1f7356a2d45d469269aa6e0c6a6c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryPanel: {fileID: 1343877785}
+  slots: []
+  slotHolder: {fileID: 393004378}
 --- !u!114 &2100021683 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1051219216, guid: 8f5e135a19626f544908fc8f156144b9,
@@ -5343,6 +5365,19 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1132698787}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5461052780703134003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5461052780703134000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3762f538b7e03a4cbe7b2f3a9d767e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
 --- !u!1001 &5677624892076789534
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5459,6 +5494,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7900548064182524339, guid: da10c3e121a4aa243a7f805e03871018,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da10c3e121a4aa243a7f805e03871018, type: 3}

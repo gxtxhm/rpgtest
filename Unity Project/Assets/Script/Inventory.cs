@@ -4,22 +4,25 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    
-    public GameObject inventoryPanel;
-    bool activeInventory = false;
+    #region Singleton
+    public static Inventory instance;
+    private void Awake()
+    {
+        if (instance != null) 
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+    }
+    #endregion
 
     public delegate void OnChangeItem();
     public OnChangeItem onChangeItem;
 
-    List<Item> items = new List <Item>();
-    // Update is called once per frame
-    void Update()
+    public List<Item> items = new List <Item>();
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.I)) 
-        {
-            activeInventory = !activeInventory;
-            inventoryPanel.SetActive(activeInventory);
-        }
     }
 
     public bool AddItem(Item _item) 
@@ -35,10 +38,8 @@ public class Inventory : MonoBehaviour
     }
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("Get1");
         if (collision.CompareTag("FieldItem")) 
         {
-                Debug.Log("Get2");
                 FieldItem fieldItem = collision.GetComponent<FieldItem>();
                 if (AddItem(fieldItem.GetItem())) 
                 {
@@ -46,4 +47,5 @@ public class Inventory : MonoBehaviour
                 }
             }
     }
+
 }

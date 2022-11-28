@@ -126,6 +126,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+
             animator.SetBool("IsWalk", false);
         }
 
