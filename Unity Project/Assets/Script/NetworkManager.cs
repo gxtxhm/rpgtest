@@ -12,6 +12,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public GameObject DisconnectPanel;
     public GameObject InGamePanel;
+    public GameObject player;
+    public Canvas canvas;
 
     [Header("Disconnect")]
     public PlayerLeaderboardEntry MyPlayFabInfo;
@@ -39,6 +41,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Screen.SetResolution(960, 540, false);
         PhotonNetwork.SendRate = 60;
         PhotonNetwork.SerializationRate = 30;
+
     }
 
     public void Login()
@@ -126,8 +129,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         isLoaded = true;
         PhotonNetwork.LocalPlayer.NickName = MyPlayFabInfo.DisplayName;
         DisconnectPanel.SetActive(false);
-        InGamePanel.SetActive(true);
+        
         // 캐릭터,다른 캐릭터와 몬스터들 다 로딩 - 몬스터매니저에서 다 받아오기
+        Instantiate(player);
+        InGamePanel.SetActive(true);
+        canvas.GetComponent<InventoryUI>().enabled = true;
     }
 
     void ShowPanel(GameObject CurPanel)
