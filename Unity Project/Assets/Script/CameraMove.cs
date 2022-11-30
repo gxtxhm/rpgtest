@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
+using Photon.Realtime;
 public class CameraMove : MonoBehaviour
 {
     public PlayerController player;
@@ -9,7 +10,7 @@ public class CameraMove : MonoBehaviour
     Vector3 vec;
 
     public bool canMove=true;
-
+    public PhotonView PV;
     void Start()
     {
         vec = new Vector3(x, y, z);
@@ -69,7 +70,7 @@ public class CameraMove : MonoBehaviour
 
     public void LateUpdate()
     {
-        if(canMove) Rotate();
+        if(canMove&&PV.IsMine) Rotate();
 
         //Zoom();
     }

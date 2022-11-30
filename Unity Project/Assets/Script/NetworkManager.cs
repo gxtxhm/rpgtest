@@ -23,16 +23,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public InputField EmailInput, PasswordInput, UsernameInput;
     
 
-    [Header("Lobby")]
+    //[Header("Lobby")]
     //public InputField UserNickNameInput;
     //public Text LobbyInfoText, UserNickNameText;
 
-    [Header("Room")]
+    //[Header("Room")]
     //public InputField SetDataInput;
     //public GameObject SetDataBtnObj;
     //public Text UserHouseDataText, RoomNameInfoText, RoomNumInfoText;
 
-    bool isLoaded;
+    //bool isLoaded;
 
 
 
@@ -51,9 +51,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         var request = new LoginWithEmailAddressRequest { Email = EmailInput.text, Password = PasswordInput.text };
         PhotonNetwork.LocalPlayer.NickName = NickNameText.text;
         PlayFabClientAPI.LoginWithEmailAddress(request, (result) => 
-        { GetLeaderboard(result.PlayFabId); PhotonNetwork.ConnectUsingSettings(); }, (error) => print("로그인 실패"));
+        { GetLeaderboard(result.PlayFabId); PhotonNetwork.ConnectUsingSettings();  }, (error) => print("로그인 실패"));
     }
-
+    void Spawn()
+    {
+        PhotonNetwork.Instantiate("CharacterRoot", Vector3.zero, Quaternion.identity);
+        NickNameText.text = PhotonNetwork.LocalPlayer.NickName;
+    }
     public void Register()
     {
         var request = new RegisterPlayFabUserRequest { Email = EmailInput.text, Password = PasswordInput.text, Username = UsernameInput.text, DisplayName = UsernameInput.text };
@@ -128,6 +132,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedLobby()
     {
+        JoinOrCreateRoom(); 
         // 방에서 로비로 올 땐 딜레이없고, 로그인해서 로비로 올 땐 PlayFabUserList가 채워질 시간동안 1초 딜레이
         //if (isLoaded)
         //{
@@ -135,31 +140,31 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         //}
         //else Invoke("OnJoinedLobbyDelay", 1);
 
-        OnJoinedLobbyDelay();
+        //OnJoinedLobbyDelay();
     }
 
-    void OnJoinedLobbyDelay()
-    {
-        isLoaded = true;
-        PhotonNetwork.LocalPlayer.NickName = MyPlayFabInfo.DisplayName;
-        DisconnectPanel.SetActive(false);
+    //void OnJoinedLobbyDelay()
+    //{
+    //    isLoaded = true;
+    //    PhotonNetwork.LocalPlayer.NickName = MyPlayFabInfo.DisplayName;
+        
 
-        Instantiate(player);
+    //    //Instantiate(player);
 
-        // 캐릭터,다른 캐릭터와 몬스터들 다 로딩 - 몬스터매니저에서 다 받아오기
-        //PV.RPC("SetPlayer", RpcTarget.AllBuffered);
+    //    // 캐릭터,다른 캐릭터와 몬스터들 다 로딩 - 몬스터매니저에서 다 받아오기
+    //    //PV.RPC("SetPlayer", RpcTarget.AllBuffered);
 
-        //if(PhotonNetwork.CountOfPlayers-PhotonNetwork.CountOfPlayersInRooms>=2)
-        {
-            for(int i=0;i< PhotonNetwork.CountOfPlayers - PhotonNetwork.CountOfPlayersInRooms;i++)
-            {
-                //Instantiate(PhotonNetwork.PlayerList[i].);
-            }
-        }
-
-        InGamePanel.SetActive(true);
-        canvas.GetComponent<InventoryUI>().enabled = true;
-    }
+    //    //if(PhotonNetwork.CountOfPlayers-PhotonNetwork.CountOfPlayersInRooms>=2)
+    //    {
+    //        for(int i=0;i< PhotonNetwork.CountOfPlayers - PhotonNetwork.CountOfPlayersInRooms;i++)
+    //        {
+    //            //Instantiate(PhotonNetwork.PlayerList[i].);
+    //        }
+    //    }
+    //    DisconnectPanel.SetActive(false);
+    //    InGamePanel.SetActive(true);
+    //    canvas.GetComponent<InventoryUI>().enabled = true;
+    //}
 
     void ShowPanel(GameObject CurPanel)
     {
@@ -182,7 +187,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        isLoaded = false;
+        //isLoaded = false;
         ShowPanel(DisconnectPanel);
     }
     #endregion
@@ -190,11 +195,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
 
     #region 방
-    public void JoinOrCreateRoom()
+    public void JoinOrCreateRoom()//  
     {
-        PhotonNetwork.JoinOrCreateRoom("Room", new RoomOptions() { MaxPlayers = 2 }, null);
-
-        Debug.Log("방입장");
+        PhotonNetwork.JoinOrCreateRoom("OpenWorld", new RoomOptions() { MaxPlayers = 20 }, null);
+        DisconnectPanel.SetActive(false);
+        InGamePanel.SetActive(true);
+        canvas.GetComponent<InventoryUI>().enabled = true;
+        Debug.Log("오픈월드입장");
 
     }
 
@@ -206,6 +213,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     // 방에 참가하면 호출되는 콜백함수이다. 
     public override void OnJoinedRoom()
     {
+        Spawn();
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             //PV.RPC("Matched" , RpcTarget.All);

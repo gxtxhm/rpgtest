@@ -969,7 +969,7 @@ ScriptsOnlyBuild:
     className: ControlPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: 8805cf21d6609be1886414e7927651a6
+      Hash: b9e77db59004e924b5da0804ccafd0a1
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CameraMove

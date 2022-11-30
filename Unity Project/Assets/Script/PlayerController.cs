@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!visibleCursor|| PV.IsMine) PlayerMove();
+        if(!visibleCursor&& PV.IsMine) PlayerMove();
         // 남의 캐릭터의 위치 동기화
         else if ((transform.position - curPos).sqrMagnitude >= 100) transform.position = curPos;
         else transform.position = Vector3.Lerp(transform.position, curPos, Time.deltaTime * 10);
